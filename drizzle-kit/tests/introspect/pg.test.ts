@@ -1,6 +1,6 @@
 import { PGlite } from '@electric-sql/pglite';
 import { SQL, sql } from 'drizzle-orm';
-import { integer, pgTable, text } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, varchar } from 'drizzle-orm/pg-core';
 import { introspectPgToFile } from 'tests/schemaDiffer';
 import { expect, test } from 'vitest';
 
@@ -181,6 +181,27 @@ test('generated column: link to another column', async () => {
 		client,
 		schema,
 		'generated-link-column',
+	);
+
+	expect(statements.length).toBe(0);
+	expect(sqlStatements.length).toBe(0);
+});
+
+test('varchar array column', async () => {
+	const client = new PGlite();
+
+	const schema = {
+		users: pgTable('users', {
+			id: integer('id').generatedAlwaysAsIdentity(),
+			numbers: integer('numbers').array(),
+			tags: varchar('tags', { length: 64 }).array()
+		}),
+	};
+
+	const { statements, sqlStatements } = await introspectPgToFile(
+		client,
+		schema,
+		'varchar-array-column',
 	);
 
 	expect(statements.length).toBe(0);

@@ -468,7 +468,8 @@ const column = (
 	defaultValue?: any,
 	internals?: PgKitInternals,
 ) => {
-	const lowered = type.toLowerCase();
+	const lowered = type.replace(/\[\]$/, '').toLowerCase();
+	
 	if (lowered.startsWith('serial')) {
 		return `${withCasing(name, casing)}: serial("${name}")`;
 	}
