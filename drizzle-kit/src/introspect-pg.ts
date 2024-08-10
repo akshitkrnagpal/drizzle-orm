@@ -741,13 +741,12 @@ const column = (
 
 		let out: string;
 		if (lowered.length !== 7) {
-			let length:string
+			let length: string
 			if (lowered.endsWith('[]')) {
 				length = lowered.substring(8, lowered.length - 3)
 			} else {
 				length = lowered.substring(8, lowered.length - 1)
 			}
-			// throw new Error(length)
 			out = `${
 				withCasing(
 					name,
